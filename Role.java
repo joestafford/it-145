@@ -1,14 +1,11 @@
-package zoo;
-
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 
 class Role
 {
   FileOutputStream roleStatement = null;
   
-  public void printRole(String role) {
+  public void printRole(String role) throws FileNotFoundException {
     if (role.equals("admin")) {
       roleStatement = new FileOutputStream("admin.txt");
       System.out.print(roleStatement);
