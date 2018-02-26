@@ -1,11 +1,10 @@
-package zoo;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.security.MessageDigest;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.security.NoSuchAlgorithmException;
+import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 
 class Authentication
 {
@@ -13,7 +12,9 @@ class Authentication
   static ArrayList<String> hash = new ArrayList<>();
   static ArrayList<String> role = new ArrayList<>();
   
-  public static void credentialReader() {
+  public static String sessionRole = "";
+  
+  public static void credentialReader() throws IOException {
 
     BufferedReader reader = new BufferedReader(new FileReader("credentials.txt"));
     String line = null;
@@ -28,13 +29,12 @@ class Authentication
     }
   }
     
-  public static void authenticator(String[] args) {
+  public static void authenticator(String[] args) throws IOException, NoSuchAlgorithmException {
     Scanner scnr = new Scanner(System.in);
     credentialReader();
     String inputUsername = "";
     String inputPassword = "";
     String encryptPassword = "";
-    String sessionRole = "";
     int attempt = 0;
     boolean authenticating = true;
     
@@ -66,7 +66,7 @@ class Authentication
       
       if (encryptPassword.equals(Authentication.hash) && inputUsername.equals(Authentication.username)) { // login successful.  set role.
         System.out.println("You are logged in");
-        sessionRole = Authentication.role;
+        sessionRole = Authentication.role.toString();
         authenticating = false;
       }
     }
