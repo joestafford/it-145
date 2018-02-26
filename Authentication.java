@@ -1,3 +1,5 @@
+package zoo;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.security.MessageDigest;
@@ -29,7 +31,7 @@ class Authentication
     }
   }
     
-  public static void authenticator(String[] args) throws IOException, NoSuchAlgorithmException {
+  public void authenticator() throws IOException, NoSuchAlgorithmException {
     Scanner scnr = new Scanner(System.in);
     credentialReader();
     String inputUsername = "";
@@ -63,17 +65,20 @@ class Authentication
         sb.append(String.format("%02x", b & 0xff));
       }
       encryptPassword = sb.toString();
+      System.out.println(Authentication.username.toString());
       
-      if (encryptPassword.equals(Authentication.hash) && inputUsername.equals(Authentication.username)) { // login successful.  set role.
-        System.out.println("You are logged in");
-        sessionRole = Authentication.role.toString();
-        authenticating = false;
+      if (Authentication.hash.contains(encryptPassword) && Authentication.username.contains(inputUsername)) {
+    	  System.out.println("You are logged in");
+          sessionRole = Authentication.role.toString();
+          authenticating = false;
       }
-    }
+      
+      if (attempt > 2 && authenticating) { // Login failed
+          System.out.println("Access Denied. Console exiting...");
+          System.exit(0);
+        }
+      
+    } 
     
-    if (attempt > 2 && authenticating) { // Login failed
-      System.out.println("Access Denied.  Console exiting...");
-      System.exit(0);
-    }
   }
 }
